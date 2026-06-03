@@ -24,5 +24,5 @@ This application is designed as a **100% Local-First AI System** to guarantee da
 Before launching, ensure your local Ollama instance points explicitly to your dedicated storage path and executes securely under localized CPU fallback rules if necessary:
 
 ```powershell
-$env:OLLAMA_MODELS="D:\Softwares\Ollama"
+$env:OLLAMA_MODELS="[YOUR MODEL PATH]"
 ollama run llama3
