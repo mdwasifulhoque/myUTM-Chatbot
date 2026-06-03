@@ -1,0 +1,20 @@
+# Python Virtual Environment
+venv/
+.venv/
+env/
+
+# Python Cache Files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Operating System Leftovers
+.DS_Store
+Thumbs.db
+
+# Large Model weights or context stores (Just in case you add data folders later)
+*.bin
+*.gguf
+models/
+blobs/
