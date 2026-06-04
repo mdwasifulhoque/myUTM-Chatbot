@@ -1,6 +1,6 @@
 # myUTM Intelligent Assistant 🤖🏛️
 
-A localized, secure Retrieval-Augmented Generation (RAG) chat application built to assist Universiti Teknologi Malaysia (UTM) students with campus services, library operations, academic schedules etc. and other university-related quesries.
+A localized, secure Retrieval-Augmented Generation (RAG) chat application built to assist Universiti Teknologi Malaysia (UTM) students with campus services, library operations, academic schedules etc. and other university-related queries.
 
 ---
 
