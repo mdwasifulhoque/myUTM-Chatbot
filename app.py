@@ -1,5 +1,7 @@
 import streamlit as st
 import os
+import pdfplumber
+import time
 from src.inference import UTMInferenceEngine
 
 # =====================================================================
@@ -91,7 +93,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # =====================================================================
-# BACKEND SYSTEM INITIALIZATION
+# BACKEND SYSTEM INITIALIZATION & DATA PARSING
 # =====================================================================
 @st.cache_resource
 def load_engine():
@@ -103,30 +105,44 @@ engine = load_engine()
 LOGO_PATH = "logo/utm_logo.png"
 use_avatar = LOGO_PATH if os.path.exists(LOGO_PATH) else "assistant"
 
-MOCK_DATABASE = {
-    "shuttle": "UTM Shuttle Bus schedule: Buses operate daily from 7:00 AM to 11:00 PM. Routes connect Residential Colleges (Kolej Tun Dr. Ismail, Kolej 9/10, Kolej Perdana) directly to the Academic Digital Hub and main faculties every 20 minutes.",
-    "library": "UTM Perpustakaan Sultanah Zanariah (PSZ) Library Hours: Open Monday to Friday from 8:00 AM to 10:00 PM. Weekends from 9:00 AM to 5:00 PM. Digital library access is 24/7 via the UTMID student portal.",
-    "exams": "UTM Semester Final Examinations: Scheduled to begin on June 15th and conclude on July 3rd. Examination schedules and venue layouts will be published on the UTMS-Portal three weeks prior."
-}
-combined_context = "\n\n".join(MOCK_DATABASE.values())
+def extract_context_from_pdf(pdf_filename):
+    """
+    Advanced layout-aware parser using pdfplumber to cleanly extract text 
+    from complex university timetables and tabular course matrices.
+    """
+    pdf_path = os.path.join("data", pdf_filename)
+    
+    if not os.path.exists(pdf_path):
+        return f"Context missing: The document {pdf_filename} was not found in the database."
+        
+    try:
+        extracted_text = ""
+        with pdfplumber.open(pdf_path) as pdf:
+            for page in pdf.pages:
+                text = page.extract_text(layout=True)
+                if text:
+                    extracted_text += text + "\n"
+                    
+        return extracted_text if extracted_text.strip() else "Error: Document is unreadable or empty."
+    except Exception as e:
+        return f"Error executing context extraction: {str(e)}"
 
-# Initialize multi-turn chat storage structures
+# Initialize multi-turn chat storage and context tracking states
 if "messages" not in st.session_state:
     st.session_state.messages = []
+if "active_context" not in st.session_state:
+    st.session_state.active_context = ""
 
 # =====================================================================
 # DYNAMIC INTERFACE ROUTING ENGINE (STATE-MACHINE)
 # =====================================================================
 
 # PHASE 1: Always render existing historical conversational nodes first
-# Display previous chat messages
 for message in st.session_state.messages:
     if message["role"] == "user":
-        # Custom user profile icon
         with st.chat_message("user", avatar="👤"): 
             st.markdown(message["content"])
     else:
-        # Dynamically pulls your UTM logo path for the bot avatar
         bot_avatar = LOGO_PATH if os.path.exists(LOGO_PATH) else "🤖"
         with st.chat_message("assistant", avatar=bot_avatar): 
             st.markdown(message["content"])
@@ -137,7 +153,7 @@ if not st.session_state.messages:
     if os.path.exists(LOGO_PATH):
         col_l, col_m, col_r = st.columns([1, 0.35, 1])
         with col_m:
-            st.image(LOGO_PATH, use_container_width=True)
+            st.image(LOGO_PATH, width='stretch')
             
     st.markdown("<div class='premium-header'>Selamat Datang</div>", unsafe_allow_html=True)
     st.markdown("<div class='premium-subheader'>I am your official myUTM Assistant. How can I guide your lifestyle ecosystem today?</div>", unsafe_allow_html=True)
@@ -145,22 +161,46 @@ if not st.session_state.messages:
     # 3-Way Grid Presentation Layout
     col1, col2, col3 = st.columns(3, gap="medium")
     with col1:
-        if st.button("🚌 Campus Shuttle\n\nWhen do the campus shuttle buses stop operating?", use_container_width=True):
+        if st.button("🚌 Campus Shuttle\n\nWhen do the campus shuttle buses stop operating?", width='stretch'):
+            st.session_state.active_context = extract_context_from_pdf("shuttle_schedule.pdf")
             st.session_state.messages.append({"role": "user", "content": "When do the campus shuttle buses stop operating?"})
             st.rerun()
             
     with col2:
-        if st.button("📚 Library Hours\n\nWhat are the operating hours for the PSZ Library?", use_container_width=True):
+        if st.button("📚 Library Hours\n\nWhat are the operating hours for the PSZ Library?", width='stretch'):
+            st.session_state.active_context = extract_context_from_pdf("library_hours.pdf")
             st.session_state.messages.append({"role": "user", "content": "What are the operating hours for the PSZ Library?"})
             st.rerun()
             
     with col3:
-        if st.button("📝 Exam Schedules\n\nWhen do the semester final examinations begin?", use_container_width=True):
+        if st.button("📝 Exam Schedules\n\nWhen do the semester final examinations begin?", width='stretch'):
+            st.session_state.active_context = extract_context_from_pdf("exam_schedules.pdf")
             st.session_state.messages.append({"role": "user", "content": "When do the semester final examinations begin?"})
             st.rerun()
 
 # PHASE 3: Listen for incoming standard user chat entries
 if user_text := st.chat_input("Ask myUTM Assistant..."):
+    query_clean = user_text.strip().lower()
+    greetings = ["hello", "hi", "hey", "assalamualaikum", "selamat datang", "selamat pagi"]
+    
+    # ROUTING CHECK: Is the user just saying hello?
+    if any(query_clean == g or query_clean.startswith(g + " ") for g in greetings) and len(query_clean.split()) <= 3:
+        st.session_state.active_context = "No specific data context requested. The user is just greeting you."
+    else:
+        # It's an actual question! Load up your evaluation PDFs
+        test_docs = ["class_schedule.pdf", "course_list.pdf"]
+        all_contexts = []
+        
+        for doc in test_docs:
+            doc_text = extract_context_from_pdf(doc)
+            if "Context missing:" not in doc_text and "Error" not in doc_text:
+                all_contexts.append(doc_text)
+                
+        if all_contexts:
+            st.session_state.active_context = "\n\n".join(all_contexts)
+        else:
+            st.session_state.active_context = "No active university schedule or course list files detected."
+            
     st.session_state.messages.append({"role": "user", "content": user_text})
     st.rerun()
 
@@ -170,12 +210,23 @@ if st.session_state.messages and st.session_state.messages[-1]["role"] == "user"
     
     # Render assistant interface component on-the-fly
     with st.chat_message("assistant", avatar=use_avatar):
-        with st.spinner("Analyzing verified university repositories..."):
+        with st.spinner("Processing request..."):
+            
+            # UNIFIED EXECUTION PIPELINE FIX: All tokens route securely through the central engine logic
             ai_response = engine.generate_response(
                 user_query=last_query, 
-                retrieved_context=combined_context
+                retrieved_context=st.session_state.active_context,
+                chat_history=st.session_state.messages
             )
-            st.markdown(ai_response)
+            
+            # PREMIUM UPGRADE: The Typewriter Animation Module
+            def response_generator(text_input):
+                for word in text_input.split(" "):
+                    yield word + " "
+                    time.sleep(0.04) # Smooth reading pace tuning
+            
+            # Stream the string visually onto the interface canvas
+            st.write_stream(response_generator(ai_response))
             
     # Commit reply parameters safely into session state and recycle cleanly
     st.session_state.messages.append({"role": "assistant", "content": ai_response})
