@@ -1,5 +1,12 @@
-import streamlit as st
 import os
+import logging
+import warnings
+
+os.environ["TRANSFORMERS_VERBOSITY"] = "error"
+warnings.filterwarnings("ignore", category=UserWarning, module="transformers")
+logging.getLogger("transformers").setLevel(logging.ERROR)
+
+import streamlit as st
 import pdfplumber
 import time
 from src.inference import UTMInferenceEngine
