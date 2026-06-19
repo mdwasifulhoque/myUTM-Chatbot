@@ -6,13 +6,27 @@ os.environ["TRANSFORMERS_VERBOSITY"] = "error"
 warnings.filterwarnings("ignore", category=UserWarning, module="transformers")
 logging.getLogger("transformers").setLevel(logging.ERROR)
 
+import sys
+from pathlib import Path
+
+# Add project root to Python path for direct execution
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
 import chromadb
 from llama_index.core import Settings, StorageContext, VectorStoreIndex, SimpleDirectoryReader
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.vector_stores.chroma import ChromaVectorStore
 
-# 1. Define Local Paths
-DB_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "chroma_db")
+from src.config import (
+    CHROMA_DB_PATH,
+    CHROMA_COLLECTION_NAME,
+    EMBED_MODEL_NAME,
+    CHUNK_SIZE,
+    CHUNK_OVERLAP
+)
+
+# Define Local Paths
+DB_DIR = CHROMA_DB_PATH
 DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data")
 
 
@@ -21,9 +35,13 @@ def initialize_rag_settings():
     Configures global LlamaIndex settings to use the local BAAI embedding model.
     This downloads the weights locally on the first run.
     """
-    print("Initializing local embedding model (BAAI/bge-small-en-v1.5)...")
-    embed_model = HuggingFaceEmbedding(model_name="BAAI/bge-small-en-v1.5")
+    print(f"Initializing local embedding model ({EMBED_MODEL_NAME})...")
+    embed_model = HuggingFaceEmbedding(model_name=EMBED_MODEL_NAME)
 
+    # Set global chunk settings for consistency across load and build
+    Settings.chunk_size = CHUNK_SIZE
+    Settings.chunk_overlap = CHUNK_OVERLAP
+    
     # Set globally across LlamaIndex orchestrations
     Settings.embed_model = embed_model
     # We will hook up the Ollama LLM component when linking inference.py later
@@ -41,7 +59,7 @@ def get_vector_index():
     db_client = chromadb.PersistentClient(path=DB_DIR)
 
     # Create or fetch our specialized UTM document collection
-    chroma_collection = db_client.get_or_create_collection("myutm_knowledge_base")
+    chroma_collection = db_client.get_or_create_collection(CHROMA_COLLECTION_NAME)
 
     # Construct the vector store layer
     vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
@@ -75,13 +93,11 @@ def build_or_refresh_database():
     # Read files natively via LlamaIndex's SimpleDirectoryReader (handles PDF/TXT out-of-the-box via pypdf)
     documents = SimpleDirectoryReader(DATA_DIR).load_data()
 
-    # Set explicit chunk limits to fit safely inside Llama 3's context boundaries
-    Settings.chunk_size = 500
-    Settings.chunk_overlap = 50
+    # Chunk settings already configured globally in initialize_rag_settings()
 
     print("Chunking documents, running embeddings, and indexing into ChromaDB (this might take a second)...")
     db_client = chromadb.PersistentClient(path=DB_DIR)
-    chroma_collection = db_client.get_or_create_collection("myutm_knowledge_base")
+    chroma_collection = db_client.get_or_create_collection(CHROMA_COLLECTION_NAME)
     vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
     storage_context = StorageContext.from_defaults(vector_store=vector_store)
 
