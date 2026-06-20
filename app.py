@@ -1,6 +1,15 @@
-import streamlit as st
 import os
+import logging
+import warnings
+
+os.environ["TRANSFORMERS_VERBOSITY"] = "error"
+warnings.filterwarnings("ignore", category=UserWarning, module="transformers")
+logging.getLogger("transformers").setLevel(logging.ERROR)
+
+import streamlit as st
+import time
 from src.inference import UTMInferenceEngine
+from src.database import get_vector_index
 
 # =====================================================================
 # SHOWCASE PRESENTATION DESIGN (CSS SHIELD)
@@ -91,11 +100,51 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # =====================================================================
-# BACKEND SYSTEM INITIALIZATION
+# BACKEND SYSTEM INITIALIZATION & RAG SETUP
 # =====================================================================
 @st.cache_resource
 def load_engine():
     return UTMInferenceEngine()
+
+@st.cache_resource
+def load_vector_index():
+    """Load the ChromaDB vector index for semantic search."""
+    try:
+        index = get_vector_index()
+        if index is None:
+            st.warning("⚠️ Vector database is empty. Please run database build first.")
+            return None
+        return index
+    except Exception as e:
+        st.error(f"Error loading vector database: {str(e)}")
+        return None
+
+def retrieve_context_from_chromadb(query: str, top_k: int = 3) -> str:
+    """
+    Query ChromaDB using semantic search to retrieve relevant context.
+    
+    Args:
+        query: User's question
+        top_k: Number of top results to retrieve
+    
+    Returns:
+        Concatenated context from retrieved documents
+    """
+    if not st.session_state.vector_index:
+        return "Vector database unavailable. Please ensure ChromaDB is initialized."
+    
+    try:
+        retriever = st.session_state.vector_index.as_retriever(similarity_top_k=top_k)
+        results = retriever.retrieve(query)
+        
+        if not results:
+            return "No relevant information found in the knowledge base."
+        
+        # Concatenate all retrieved document texts
+        context = "\n\n".join([node.get_content() for node in results])
+        return context
+    except Exception as e:
+        return f"Error retrieving context: {str(e)}"
 
 engine = load_engine()
 
@@ -103,30 +152,24 @@ engine = load_engine()
 LOGO_PATH = "logo/utm_logo.png"
 use_avatar = LOGO_PATH if os.path.exists(LOGO_PATH) else "assistant"
 
-MOCK_DATABASE = {
-    "shuttle": "UTM Shuttle Bus schedule: Buses operate daily from 7:00 AM to 11:00 PM. Routes connect Residential Colleges (Kolej Tun Dr. Ismail, Kolej 9/10, Kolej Perdana) directly to the Academic Digital Hub and main faculties every 20 minutes.",
-    "library": "UTM Perpustakaan Sultanah Zanariah (PSZ) Library Hours: Open Monday to Friday from 8:00 AM to 10:00 PM. Weekends from 9:00 AM to 5:00 PM. Digital library access is 24/7 via the UTMID student portal.",
-    "exams": "UTM Semester Final Examinations: Scheduled to begin on June 15th and conclude on July 3rd. Examination schedules and venue layouts will be published on the UTMS-Portal three weeks prior."
-}
-combined_context = "\n\n".join(MOCK_DATABASE.values())
-
-# Initialize multi-turn chat storage structures
+# Initialize multi-turn chat storage and context tracking states
 if "messages" not in st.session_state:
     st.session_state.messages = []
+if "active_context" not in st.session_state:
+    st.session_state.active_context = ""
+if "vector_index" not in st.session_state:
+    st.session_state.vector_index = load_vector_index()
 
 # =====================================================================
 # DYNAMIC INTERFACE ROUTING ENGINE (STATE-MACHINE)
 # =====================================================================
 
 # PHASE 1: Always render existing historical conversational nodes first
-# Display previous chat messages
 for message in st.session_state.messages:
     if message["role"] == "user":
-        # Custom user profile icon
         with st.chat_message("user", avatar="👤"): 
             st.markdown(message["content"])
     else:
-        # Dynamically pulls your UTM logo path for the bot avatar
         bot_avatar = LOGO_PATH if os.path.exists(LOGO_PATH) else "🤖"
         with st.chat_message("assistant", avatar=bot_avatar): 
             st.markdown(message["content"])
@@ -137,30 +180,47 @@ if not st.session_state.messages:
     if os.path.exists(LOGO_PATH):
         col_l, col_m, col_r = st.columns([1, 0.35, 1])
         with col_m:
-            st.image(LOGO_PATH, use_container_width=True)
+            st.image(LOGO_PATH, width='stretch')
             
     st.markdown("<div class='premium-header'>Selamat Datang</div>", unsafe_allow_html=True)
     st.markdown("<div class='premium-subheader'>I am your official myUTM Assistant. How can I guide your lifestyle ecosystem today?</div>", unsafe_allow_html=True)
     
-    # 3-Way Grid Presentation Layout
+    # 3-Way Grid Presentation Layout - Quick Question Buttons
     col1, col2, col3 = st.columns(3, gap="medium")
+    
     with col1:
-        if st.button("🚌 Campus Shuttle\n\nWhen do the campus shuttle buses stop operating?", use_container_width=True):
-            st.session_state.messages.append({"role": "user", "content": "When do the campus shuttle buses stop operating?"})
+        if st.button("🚌 Campus Shuttle\n\nWhen do the campus shuttle buses stop operating?", width='stretch'):
+            question = "When do the campus shuttle buses stop operating?"
+            st.session_state.active_context = retrieve_context_from_chromadb(question)
+            st.session_state.messages.append({"role": "user", "content": question})
             st.rerun()
             
     with col2:
-        if st.button("📚 Library Hours\n\nWhat are the operating hours for the PSZ Library?", use_container_width=True):
-            st.session_state.messages.append({"role": "user", "content": "What are the operating hours for the PSZ Library?"})
+        if st.button("📚 Library Hours\n\nWhat are the operating hours for the PSZ Library?", width='stretch'):
+            question = "What are the operating hours for the PSZ Library?"
+            st.session_state.active_context = retrieve_context_from_chromadb(question)
+            st.session_state.messages.append({"role": "user", "content": question})
             st.rerun()
             
     with col3:
-        if st.button("📝 Exam Schedules\n\nWhen do the semester final examinations begin?", use_container_width=True):
-            st.session_state.messages.append({"role": "user", "content": "When do the semester final examinations begin?"})
+        if st.button("📝 Exam Schedules\n\nWhen do the semester final examinations begin?", width='stretch'):
+            question = "When do the semester final examinations begin?"
+            st.session_state.active_context = retrieve_context_from_chromadb(question)
+            st.session_state.messages.append({"role": "user", "content": question})
             st.rerun()
 
 # PHASE 3: Listen for incoming standard user chat entries
 if user_text := st.chat_input("Ask myUTM Assistant..."):
+    query_clean = user_text.strip().lower()
+    greetings = ["hello", "hi", "hey", "assalamualaikum", "selamat datang", "selamat pagi"]
+    
+    # ROUTING CHECK: Is the user just saying hello?
+    if any(query_clean == g or query_clean.startswith(g + " ") for g in greetings) and len(query_clean.split()) <= 3:
+        st.session_state.active_context = "No specific data context requested. The user is just greeting you."
+    else:
+        # It's an actual question! Query ChromaDB semantically
+        st.session_state.active_context = retrieve_context_from_chromadb(user_text, top_k=3)
+            
     st.session_state.messages.append({"role": "user", "content": user_text})
     st.rerun()
 
@@ -170,12 +230,29 @@ if st.session_state.messages and st.session_state.messages[-1]["role"] == "user"
     
     # Render assistant interface component on-the-fly
     with st.chat_message("assistant", avatar=use_avatar):
-        with st.spinner("Analyzing verified university repositories..."):
-            ai_response = engine.generate_response(
-                user_query=last_query, 
-                retrieved_context=combined_context
-            )
-            st.markdown(ai_response)
+        with st.spinner("Searching knowledge base..."):
+            
+            try:
+                # Generate response using RAG pipeline with ChromaDB context
+                ai_response = engine.generate_response(
+                    user_query=last_query, 
+                    retrieved_context=st.session_state.active_context,
+                    chat_history=st.session_state.messages
+                )
+                
+                # PREMIUM UPGRADE: The Typewriter Animation Module
+                def response_generator(text_input):
+                    for word in text_input.split(" "):
+                        yield word + " "
+                        time.sleep(0.04) # Smooth reading pace tuning
+                
+                # Stream the string visually onto the interface canvas
+                st.write_stream(response_generator(ai_response))
+                
+            except Exception as e:
+                error_msg = f"❌ Error generating response: {str(e)}"
+                st.error(error_msg)
+                ai_response = error_msg
             
     # Commit reply parameters safely into session state and recycle cleanly
     st.session_state.messages.append({"role": "assistant", "content": ai_response})

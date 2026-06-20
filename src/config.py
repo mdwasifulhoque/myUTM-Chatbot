@@ -1,8 +1,48 @@
 import os
+from pathlib import Path
 
-# Model Configurations
+# =====================================================================
+# MODEL CONFIGURATIONS
+# =====================================================================
+# Local Ollama model (llama3 expected to be pre-installed)
 LLM_MODEL = "llama3"
+
+# HuggingFace embedding model for vector search
 EMBED_MODEL_NAME = "BAAI/bge-small-en-v1.5"
 
-# Vector Database Path
+# =====================================================================
+# VECTOR DATABASE CONFIGURATION
+# =====================================================================
 CHROMA_DB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "chroma_db")
+
+# Collection name for storing UTM knowledge base
+CHROMA_COLLECTION_NAME = "myutm_knowledge_base"
+
+# Chunking settings for document processing
+CHUNK_SIZE = 500
+CHUNK_OVERLAP = 50
+
+# =====================================================================
+# INFERENCE SETTINGS
+# =====================================================================
+LLM_REQUEST_TIMEOUT = 60.0  # Timeout for Ollama requests (seconds)
+LLM_TEMPERATURE = 0.0  # Deterministic output (no hallucinations)
+
+# =====================================================================
+# CONFIGURATION VALIDATION
+# =====================================================================
+def validate_config():
+    """Validate that required directories and configurations exist."""
+    # Ensure chroma_db parent directory exists
+    db_parent = Path(CHROMA_DB_PATH).parent
+    if not db_parent.exists():
+        raise ValueError(f"Database parent directory does not exist: {db_parent}")
+    
+    # Create chroma_db if it doesn't exist
+    Path(CHROMA_DB_PATH).mkdir(parents=True, exist_ok=True)
+
+# Run validation on module load
+try:
+    validate_config()
+except Exception as e:
+    print(f"⚠️  Configuration validation warning: {e}")
