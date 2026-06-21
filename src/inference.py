@@ -3,12 +3,18 @@ from llama_index.core.llms import ChatMessage, MessageRole
 from src.config import (
     LLM_MODEL,
     LLM_REQUEST_TIMEOUT,
-    LLM_TEMPERATURE
+    LLM_TEMPERATURE,
+    GREETINGS
 )
 
 # =====================================================================
 # RAG SYSTEM PROMPT FOR STRICT FACTUAL EXTRACTION AND FALLBACK PROTOCOL
 # =====================================================================
+FALLBACK_MESSAGE = (
+    "I'm not able to provide that. For specific details, please check the "
+    "official myUTM portal or contact your faculty department."
+)
+
 SYSTEM_PROMPT = (
     "You are the official myUTM Intelligent Assistant, the premier conversational AI for "
     "Universiti Teknologi Malaysia (UTM). Your sole function is to provide students with precise, "
@@ -45,8 +51,7 @@ SYSTEM_PROMPT = (
     "You must NOT append any apology or 'missing data' text to the bottom of a valid response.\n"
     "- THE MISSING DATA TRIGGER: If the answer to the student's factual query cannot be found ANYWHERE in the "
     "provided reference data, you must halt all data extraction and output ONLY this exact phrase verbatim:\n"
-    "'I am sorry, but I do not have that specific information right now. Please check the official myUTM portal "
-    "or contact your faculty department.'"
+    f"'{FALLBACK_MESSAGE}'"
 )
 
 # =====================================================================
@@ -63,9 +68,9 @@ class UTMInferenceEngine:
     def __init__(self):
             # Explicitly enforce temperature=0.0 to kill conversational filler and hallucinations
             self.llm = Ollama(
-                model=LLM_MODEL, 
+                model=LLM_MODEL,
                 request_timeout=LLM_REQUEST_TIMEOUT,
-                additional_kwargs={"temperature": LLM_TEMPERATURE}
+                temperature=LLM_TEMPERATURE
             )
 
     def generate_response(self, user_query: str, retrieved_context: str, chat_history: list = None) -> str:
@@ -74,8 +79,8 @@ class UTMInferenceEngine:
         # -----------------------------------------------------------------
         # 1. THE INTERCEPTOR: Short-circuit the pipeline for pure greetings
         # -----------------------------------------------------------------
-        greetings = ["hello", "hi", "hey", "assalamualaikum", "selamat datang", "selamat pagi"]
-        
+        greetings = GREETINGS
+
         if any(query_clean == g or query_clean.startswith(g + " ") for g in greetings) and len(query_clean.split()) <= 3:
             messages = [
                 ChatMessage(role=MessageRole.SYSTEM, content=GREETING_PROMPT),
@@ -121,8 +126,8 @@ class UTMInferenceEngine:
             # If the model breaks and outputs fewer than 4 words (e.g. "I", "Sure", "I am"), 
             # override it with the standard fallback refusal.
             if len(raw_output.split()) <= 3:
-                return "I am a university logistics assistant and cannot perform that task."
-                
+                return FALLBACK_MESSAGE
+
             return raw_output
             
         except Exception as e:

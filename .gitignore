@@ -2,6 +2,7 @@
 venv/
 .venv/
 env/
+.idea/
 
 # Python Cache Files
 __pycache__/
@@ -18,3 +19,5 @@ Thumbs.db
 *.gguf
 models/
 blobs/
+/data/
+/chroma_db/

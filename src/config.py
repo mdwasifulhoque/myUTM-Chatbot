@@ -28,6 +28,20 @@ CHUNK_OVERLAP = 50
 LLM_REQUEST_TIMEOUT = 60.0  # Timeout for Ollama requests (seconds)
 LLM_TEMPERATURE = 0.0  # Deterministic output (no hallucinations)
 
+# Greetings list -- single source of truth, imported by both app.py and inference.py
+# so the two layers can never disagree on what counts as a greeting.
+GREETINGS = ["hello", "hi", "hey", "assalamualaikum", "selamat datang", "selamat pagi"]
+
+# =====================================================================
+# RETRIEVAL SETTINGS
+# =====================================================================
+# Minimum similarity score a retrieved chunk needs to be treated as relevant.
+# Without this, the retriever always returns its top-k closest chunks even when
+# none of them are actually relevant, and the LLM has to notice that on its own.
+# Tune this: print [r.score for r in results] for a few on-topic and off-topic
+# test queries and pick a cutoff that separates them -- there's no universal
+# "correct" number, it depends on your embedding model and your data.
+SIMILARITY_CUTOFF = 0.45
 # =====================================================================
 # CONFIGURATION VALIDATION
 # =====================================================================
