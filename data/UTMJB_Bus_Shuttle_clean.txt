@@ -1,0 +1,296 @@
+UTM JOHOR BAHRU — ON-CAMPUS SHUTTLE BUS SERVICES
+Source: Unit UTM Fleet, Jabatan TNC(P). Effective schedule from 6 October 2025.
+
+GENERAL RULES (apply to every route below unless stated otherwise):
+- No bus service on Saturday, Sunday, public holidays, or during semester breaks
+  (except routes BAS E1 and E2, which have a separate, reduced Saturday & Sunday
+  schedule — see the end of this document).
+- On Fridays, no trips run between 12:40 PM and 2:00 PM on any route.
+- Arrival times may vary due to traffic.
+
+Location code reference (confirmed against Useful-Contact.pdf where possible):
+- CP = Center Point
+- KP = Kolej Perdana
+- K9/10 = Kolej 9 & 10
+- KTC = Kolej Tuanku Canselor
+- KTHO = Kolej Tun Hussein Onn
+- KTDI = Kolej Tun Dr. Ismail
+- KTR = Kolej Tun Razak
+- KDOJ = likely Kolej Dato' Onn Jaafar (initials match; not explicitly confirmed in source)
+- KDSE = likely Kolej Datin Seri Endon (initials match; not explicitly confirmed in source)
+- KLG, FKT, FKE, V01 (TMN U), FABU = could not be confidently confirmed from available
+  documents — verify locally before relying on these in answers (FKT/FKE are likely
+  faculty building codes; TMN U likely "Taman Universiti").
+
+============================================================
+BAS A1 — Route: KP to CP, via Jalan Amal (KP - CP - Jln Amal - KP)
+============================================================
+Departures from KP (Kolej Perdana), towards CP:
+- Morning: 0730, 0800, 0830, 0900, 0930, 1000
+- Afternoon: 1200, 1240, 1320, 1400, 1440
+- Evening: 1650, 1730, 1810, 1945, 2015
+
+Departures from CP (Center Point), towards KP:
+- Morning: 0745, 0815, 0845, 0915, 0945, 1015
+- Afternoon: 1220, 1300, 1340, 1420, 1500
+- Evening: 1630, 1710, 1750, 2000, 2200, 2300
+
+============================================================
+BAS B1 — Route: KP - K9/10 to Cluster (KP - K9/10 - T02 - T08 - K9/10 - KP)
+============================================================
+Departures from KP, towards Cluster (T02):
+- Morning: 0700, 0730, 0800, 0830, 0900, 0930
+- Afternoon: 1135, 1215, 1255, 1335, 1415
+- Evening: 1620, 1700, 1740
+
+Departures from Cluster (T02), towards KP:
+- Morning: 0715, 0745, 0815, 0845, 0915, 0945
+- Afternoon: 1115, 1155, 1235, 1315, 1355, 1435
+- Evening: 1600, 1640, 1720, 1800
+
+============================================================
+BAS B2 — Route: KP - K9/10 to Cluster (KP - K9/10 - T02 - T08 - K9/10 - KP)
+============================================================
+Departures from KP, towards Cluster (T02):
+- Morning: 0710, 0740, 0810, 0840, 0910, 0940
+- Afternoon: 1145, 1225, 1305, 1345, 1425
+- Evening: 1630, 1710, 1750
+
+Departures from Cluster (T02), towards KP:
+- Morning: 0725, 0755, 0825, 0855, 0925, 0955
+- Afternoon: 1125, 1205, 1245, 1325, 1405, 1445
+- Evening: 1610, 1650, 1730, 1810
+
+============================================================
+BAS B3 — Route: KP - K9/10 to Cluster (KP - K9/10 - T02 - T08 - K9/10 - KP)
+============================================================
+Departures from KP, towards Cluster (T02):
+- Morning: 0720, 0750, 0820, 0850, 0920, 0950
+- Afternoon: 1200, 1240, 1320, 1400, 1440
+- Evening: 1645, 1725, 1805
+
+Departures from Cluster (T02), towards KP:
+- Morning: 0735, 0805, 0835, 0905, 0935, 1005
+- Afternoon: 1140, 1220, 1300, 1340, 1420, 1500
+- Evening: 1625, 1705, 1745, 1825
+
+============================================================
+BAS C1 — Route: Kolej 9/10 to Lingkaran Ilmu (K9/10 - KTC - CP - Jln Amal - KTC - K9/10)
+============================================================
+Departures from K9/10, towards CP:
+- Morning: 0700, 0730, 0800, 0830, 0900, 0930
+- Afternoon: 1135, 1215, 1255, 1335, 1415
+- Evening: 1620, 1700, 1740, 1820
+
+Departures from CP, towards K9/10:
+- Morning: 0715, 0745, 0815, 0845, 0915, 0945
+- Afternoon: 1115, 1155, 1235, 1315, 1355, 1435
+- Evening: 1600, 1640, 1720, 1800, 1840
+
+============================================================
+BAS C2 — Route: Kolej 9/10 to Lingkaran Ilmu (K9/10 - KTC - CP - Jln Amal - KTC - K9/10)
+============================================================
+Departures from K9/10, towards CP:
+- Morning: 0710, 0740, 0810, 0840, 0910, 0940
+- Afternoon: 1145, 1225, 1305, 1345, 1425
+- Evening: 1630, 1710, 1750, 1945, 2015
+
+Departures from CP, towards K9/10:
+- Morning: 0725, 0755, 0825, 0855, 0925, 0955
+- Afternoon: 1125, 1205, 1245, 1325, 1405, 1445
+- Evening: 1610, 1650, 1730, 2000, 2200, 2300
+
+============================================================
+BAS C3 — Route: Kolej 9/10 to Lingkaran Ilmu (K9/10 - KTC - CP - Jln Amal - KTC - K9/10)
+============================================================
+Departures from K9/10, towards CP:
+- Morning: 0720, 0750, 0820, 0850, 0920, 0950
+- Afternoon: 1200, 1240, 1320, 1400, 1440
+- Evening: 1645, 1725, 1805
+
+Departures from CP, towards K9/10:
+- Morning: 0735, 0805, 0835, 0905, 0935, 1005
+- Afternoon: 1140, 1220, 1300, 1340, 1420, 1500
+- Evening: 1625, 1705, 1745, 1825
+
+============================================================
+BAS D1 — Route: CP to FKT (n29), via N24 (CP - N24 - FKT(n29) - P19 - CP)
+============================================================
+Departures from CP, towards FKT:
+- Morning: 0715, 0745, 0815, 0845, 0915, 0945
+- Afternoon: 1145, 1215, 1245, 1345, 1415
+- Evening: 1615, 1645, 1715, 1745
+
+Departures from FKT (n29), towards CP:
+- Morning: 0730, 0800, 0830, 0900, 0930, 1000
+- Afternoon: 1130, 1200, 1230, 1300, 1400, 1430
+- Evening: 1600, 1630, 1700, 1730, 1800
+
+============================================================
+BAS E1 — Route: KDOJ/KLG/KDSE to Cluster (T02-T08), via CP - N24 - KTC — WEEKDAY SCHEDULE
+============================================================
+Departures from KDOJ, towards Cluster:
+- Morning: 0700, 0800, 0900
+- Afternoon: 1100, 1200, 1300, 1400
+- Evening: 1630, 1730
+
+Departures from Cluster (T02-T08), towards KDOJ:
+- Morning: (not listed)
+- Afternoon: 1130, 1230, 1330, 1430
+- Evening: 1600, 1700, 1800
+
+============================================================
+BAS E2 — Route: KDOJ/KLG/KDSE to Cluster (T02-T08), via CP - D05 (Jln Amal) - KTC — WEEKDAY SCHEDULE
+============================================================
+Departures from KDOJ, towards Cluster:
+- Morning: 0715, 0815, 0915
+- Afternoon: 1115, 1215, 1315, 1415
+- Evening: 1645, 1745
+
+Departures from Cluster (T02), towards KDOJ:
+- Morning: (not listed)
+- Afternoon: 1145, 1245, 1345, 1445
+- Evening: 1615, 1715, 1815
+
+============================================================
+BAS E3 — Route: KDOJ/KLG/KDSE to Cluster (T02-T08), via CP - N24 - KTC — WEEKDAY SCHEDULE
+============================================================
+Departures from KDOJ, towards Cluster:
+- Morning: 0730, 0830, 0930
+- Afternoon: 1130, 1230, 1330, 1430
+- Evening: 1700, 1800
+
+Departures from Cluster (T02-T08), towards KDOJ:
+- Morning: (not listed)
+- Afternoon: 1200, 1300, 1400, 1500
+- Evening: 1630, 1730, 1830
+
+============================================================
+BAS E4 — Route: KDOJ/KLG/KDSE to Cluster (T02-T08), via CP - D05 (Jln Amal) - KTC — WEEKDAY SCHEDULE
+============================================================
+Departures from KDOJ, towards Cluster:
+- Morning: 0745, 0845, 0945
+- Afternoon: 1145, 1245, 1345, 1445
+- Evening: 1715, 1815
+
+Departures from Cluster (T02-T08), towards KDOJ:
+- Morning: (not listed)
+- Afternoon: 1215, 1315, 1415, 1515
+- Evening: 1645, 1745, 1845
+
+============================================================
+BAS E5 — Route: KDOJ to Cluster (T02-T08), via CP - N24 - KTC — WEEKDAY SCHEDULE
+NOTE: source table has ambiguous row alignment in the original PDF for this route —
+recommend visually double-checking before relying on these times.
+============================================================
+Departures from KDOJ, towards Cluster:
+- Morning: 0700, 0800, (gap), 1000, 1100
+- Evening: 1515, 1615, (gap), 1730
+
+Departures from Cluster (T02-T08), towards KDOJ:
+- Morning: 0730, 0830, (gap), 1030, 1130
+- Evening: 1545, (gap), 1700, 1800
+
+============================================================
+BAS E6 — Route: KDOJ to Cluster (T02-T08), via CP - D05 (Jln Amal) - KTC — WEEKDAY SCHEDULE
+NOTE: source table has ambiguous row alignment in the original PDF for this route, and
+includes a separate late-night CP(FABU) leg — recommend visually double-checking before
+relying on these times.
+============================================================
+Departures from KDOJ, towards Cluster:
+- Morning: 0700, 0800, (gap), 1030
+- Evening: 1500, 1600, (gap), 1730
+- Late night (towards CP/FABU): 1945, 2015
+
+Departures from Cluster (T02-T08) or CP (FABU), towards KDOJ:
+- Morning: 0730, 0830, 1000, 1100
+- Evening: 1530, 1700, 1800
+- Late night (from CP/FABU): 2000, 2200, 2300
+
+============================================================
+BAS F1 — Route: KTR to Lingkaran Ilmu (KTR - KTHO - KTDI - Jln Amal - CP - KTR)
+============================================================
+Departures from KTR (Kolej Tun Razak), towards FKE:
+- Morning: 0705, 0735, 0805, 0835, 0905, 0935
+- Afternoon: 1135, 1215, 1255, 1335, 1415
+- Evening: 1625, 1705, 1745, 1825
+
+Departures from FKE (P19a), towards KTR:
+- Morning: 0720, 0750, 0820, 0850, 0920, 0950
+- Afternoon: 1115, 1155, 1235, 1315, 1355, 1435
+- Evening: 1605, 1645, 1725, 1805, 1845
+
+============================================================
+BAS F2 — Route: KTR to Lingkaran Ilmu (KTR - KTHO - KTDI - Jln Amal - CP - KTR)
+============================================================
+Departures from KTR (Kolej Tun Razak), towards FKE:
+- Morning: 0715, 0745, 0815, 0845, 0915, 0945
+- Afternoon: 1145, 1225, 1305, 1345, 1425
+- Evening: 1635, 1715, 1755, 1945, 2015
+
+Departures from FKE (P19a), towards KTR:
+- Morning: 0730, 0800, 0830, 0900, 0930, 1000
+- Afternoon: 1125, 1205, 1245, 1325, 1405, 1445
+- Evening: 1615, 1655, 1735, 2000, 2200, 2300
+
+============================================================
+BAS G1 — Route: KTR/KTHO/KTDI to FKT, via N24 - FKT(n29) - P19 - CP
+============================================================
+Departures from KTR (K01), towards FKT:
+- Morning: 0700, 0730, 0800, 0830, 0900, 0930
+- Afternoon: 1140, 1220, 1300, 1340, 1420
+- Evening: 1620, 1700, 1740, 1820
+
+Departures from FKT (N29), towards KTR:
+- Morning: 0715, 0745, 0815, 0845, 0915, 0945
+- Afternoon: 1120, 1200, 1240, 1320, 1400, 1440
+- Evening: 1600, 1640, 1720, 1800, 1840
+
+============================================================
+BAS G2 — Route: KTR/KTHO/KTDI to FKT, via N24 - FKT(n29) - P19 - CP
+============================================================
+Departures from KTR (K01), towards FKT:
+- Morning: 0715, 0745, 0815, 0845, 0915, 0945
+- Afternoon: 1150, 1230, 1310, 1350, 1430
+- Evening: 1630, 1710, 1750, 1830
+
+Departures from FKT (N29), towards KTR:
+- Morning: 0730, 0800, 0830, 0900, 0930, 1000
+- Afternoon: 1130, 1210, 1250, 1330, 1410, 1450
+- Evening: 1610, 1650, 1730, 1810, 1850
+
+============================================================
+BAS H — Route: CP to V01 (Taman Universiti), via Jln Amal (CP - Jln Amal - V01 - CP)
+============================================================
+Departures from CP, towards V01:
+- Morning: 0715, 0745, 0815, 0845, 0915, 0945
+- Afternoon: 1120, 1200, 1240, 1320, 1400
+- Evening: 1600, 1640, 1720, 1800
+
+Departures from V01 (Taman Universiti), towards CP:
+- Morning: 0730, 0800, 0830, 0900, 0930, 1000
+- Afternoon: 1140, 1220, 1300, 1340, 1420
+- Evening: 1620, 1700, 1740, 1820
+
+============================================================
+BAS J — Route: Centre Point (FABU) to Stadium
+============================================================
+Every Tuesday only:
+- Departures from CP, towards Stadium: 1430, 1500
+- Departures from Stadium, towards CP: 1445, 1515
+
+Monday to Friday:
+- Departures from CP, towards Stadium: 1630, 1700, 1730, 1815, 1845
+- Departures from Stadium, towards CP: 1645, 1715, 1800, 1830, 1900
+
+============================================================
+WEEKEND SCHEDULE (Saturday & Sunday) — ONLY routes BAS E1 and E2 operate on weekends
+============================================================
+
+BAS E1 (Saturday & Sunday) — Route: KDOJ/KLG/KDSE to Kolej 9/10, via CP - N24 - KTC
+Departures from KDOJ, towards Kolej 9/10: 0730, 0900, 1100, 1300, 1500, 1700
+Departures from Kolej 9/10, towards KDOJ: 0800, 0930, 1130, 1330, 1530, 1730
+
+BAS E2 (Saturday & Sunday) — Route: KDOJ/KLG/KDSE to Kolej 9/10, via CP - N24 - KTC
+Departures from KDOJ, towards Kolej 9/10: 0800, 1000, 1200, 1400, 1600, 1800
+Departures from Kolej 9/10, towards KDOJ: 0830, 1030, 1230, 1430, 1630, 1830

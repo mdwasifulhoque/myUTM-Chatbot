@@ -1,0 +1,42 @@
+UTM KUALA LUMPUR SHUTTLE BUS SERVICE — KOLEJ SISWA JAYA (KSJ) TO/FROM UTMKL CAMPUS
+
+ROUTE: BDR
+Applies on: Tuesday and Thursday
+
+Direction: Kolej Siswa Jaya to UTMKL Campus
+- 0700 to 1000: non-stop bus (continuous service, no fixed departure times)
+- Scheduled departures: 1220, 1240, 1300, 1320, 1340, 1400
+- After 1400, the schedule for this direction follows the return bus trip from UTMKL Campus (see below)
+
+Direction: UTMKL Campus to Kolej Siswa Jaya
+- Scheduled departures: 1200, 1220, 1240, 1300, 1320, 1340, 1600, 1630, 1700, 1730, 1800, 1830
+
+ROUTE: EXCEPT BDR
+Applies on: Monday and Wednesday
+
+Direction: Kolej Siswa Jaya to UTMKL Campus
+- 0700 to 1000: non-stop bus (continuous service, no fixed departure times)
+- Scheduled departures: 1040, 1100, 1125, 1150, 1210, 1230, 1250, 1310, 1330, 1350, 1410, 1430, 1450
+- After 1450, the schedule for this direction follows the return bus trip from UTMKL Campus (see below)
+
+Direction: UTMKL Campus to Kolej Siswa Jaya
+- Scheduled departures: 1020, 1040, 1100, 1125, 1150, 1210, 1230, 1250, 1310, 1330, 1350, 1410, 1430
+- 1500 to 1530: one departure within this window
+- Scheduled departures: 1600, 1630, 1700, 1730, 1800, 1830
+
+ROUTE: EXCEPT BDR
+Applies on: Friday
+
+Direction: Kolej Siswa Jaya to UTMKL Campus
+- 0700 to 1000: non-stop bus (continuous service, no fixed departure times)
+- Scheduled departures: 1040, 1100, 1120, 1145, 1210, 1230, 1430
+- After 1430, the schedule for this direction follows the return bus trip from UTMKL Campus (see below)
+
+Direction: UTMKL Campus to Kolej Siswa Jaya
+- Scheduled departures: 1020, 1040, 1100, 1120, 1145, 1210, 1230, 1430
+- 1500 to 1530: one departure within this window
+- Scheduled departures: 1600, 1630, 1700, 1730, 1800, 1830
+
+CONTACT FOR SCHEDULE ENQUIRIES
+- UTM Fleet Hotline: 018-2215110
+- En. Muhammad Khairul Izzuan (Ketua Unit UTM Fleet, UTMKL): 011-36608580

@@ -11,7 +11,12 @@ import time
 from pathlib import Path
 from src.inference import UTMInferenceEngine
 from src.database import get_vector_index
-from src.config import GREETINGS, SIMILARITY_CUTOFF
+from src.config import GREETINGS, SIMILARITY_CUTOFF, FALLBACK_MESSAGE
+
+# Named sentinel strings -- used both as retrieve_context_from_chromadb's return
+# values AND as the bypass check below, so they can't drift out of sync.
+NO_CONTEXT_FOUND = "No relevant information found in the knowledge base."
+VECTOR_DB_UNAVAILABLE = "Vector database unavailable. Please ensure ChromaDB is initialized."
 
 # =====================================================================
 # RESOLVE LOGO PATH FIRST -- needed by set_page_config below, so this
@@ -104,6 +109,16 @@ st.markdown("""
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
             background-color: #FFFFFF !important;
         }
+
+        /* Disclaimer footer */
+        .ai-disclaimer-footer {
+            text-align: center;
+            color: #A0AEC0 !important;
+            font-size: 12px;
+            margin-top: 30px;
+            padding-top: 12px;
+            border-top: 1px solid #E2E8F0;
+        }
     </style>
 """, unsafe_allow_html=True)
 
@@ -142,19 +157,19 @@ def retrieve_context_from_chromadb(query: str, top_k: int = 3) -> str:
         Concatenated context from retrieved documents
     """
     if not st.session_state.vector_index:
-        return "Vector database unavailable. Please ensure ChromaDB is initialized."
+        return VECTOR_DB_UNAVAILABLE
 
     try:
         retriever = st.session_state.vector_index.as_retriever(similarity_top_k=top_k)
         results = retriever.retrieve(query)
-        print([round(r.score, 3) for r in results])  # TEMP debug line
+
         # Only keep chunks that are actually relevant -- without this, the
         # retriever returns its top-k closest chunks regardless of whether
         # any of them are a good match for the query.
         relevant_results = [r for r in results if r.score is not None and r.score >= SIMILARITY_CUTOFF]
 
         if not relevant_results:
-            return "No relevant information found in the knowledge base."
+            return NO_CONTEXT_FOUND
 
         # Concatenate all retrieved document texts
         context = "\n\n".join([node.get_content() for node in relevant_results])
@@ -251,17 +266,24 @@ if st.session_state.messages and st.session_state.messages[-1]["role"] == "user"
         with st.spinner("Searching knowledge base..."):
 
             try:
-                # Cap how much history we send -- without this, the prompt
-                # grows unbounded over a long conversation.
-                MAX_HISTORY_MESSAGES = 6  # roughly the last 3 exchanges
-                trimmed_history = st.session_state.messages[-MAX_HISTORY_MESSAGES:]
+                # If retrieval definitively found nothing relevant, don't even ask
+                # the LLM to improvise -- return the fallback directly. This is
+                # what stops the model from substituting its own pretrained
+                # "knowledge" (or echoing the raw status string) when there's
+                # genuinely nothing in the knowledge base to answer from.
+                if st.session_state.active_context in (NO_CONTEXT_FOUND, VECTOR_DB_UNAVAILABLE):
+                    ai_response = FALLBACK_MESSAGE
+                else:
+                    # Cap how much history we send -- without this, the prompt
+                    # grows unbounded over a long conversation.
+                    MAX_HISTORY_MESSAGES = 6  # roughly the last 3 exchanges
+                    trimmed_history = st.session_state.messages[-MAX_HISTORY_MESSAGES:]
 
-                # Generate response using RAG pipeline with ChromaDB context
-                ai_response = engine.generate_response(
-                    user_query=last_query,
-                    retrieved_context=st.session_state.active_context,
-                    chat_history=trimmed_history
-                )
+                    ai_response = engine.generate_response(
+                        user_query=last_query,
+                        retrieved_context=st.session_state.active_context,
+                        chat_history=trimmed_history
+                    )
 
 
                 # PREMIUM UPGRADE: The Typewriter Animation Module
@@ -282,3 +304,12 @@ if st.session_state.messages and st.session_state.messages[-1]["role"] == "user"
     # Commit reply parameters safely into session state and recycle cleanly
     st.session_state.messages.append({"role": "assistant", "content": ai_response})
     st.rerun()
+
+# =====================================================================
+# AI DISCLAIMER FOOTER
+# =====================================================================
+st.markdown(
+    "<div class='ai-disclaimer-footer'>myUTM Assistant is an AI and can make mistakes. "
+    "Please double-check responses.</div>",
+    unsafe_allow_html=True
+)
